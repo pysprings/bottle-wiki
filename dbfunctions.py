@@ -1,9 +1,5 @@
 import sqlite3
 
-conn = sqlite3.connect('wiki.db')
-
-cur = conn.cursor()
-
 # Create if not exists Articles table
 tablesql = """
 CREATE TABLE IF NOT EXISTS articles (
@@ -14,9 +10,12 @@ subject varchar PRIMARY KEY
 );
 """
 
-cur.execute(tablesql)
-conn.commit()
-
+def init_db(path):
+  """Initialize the database if it doesn't exist."""
+  conn = sqlite3.connect(path)
+  cur = conn.cursor()
+  cur.execute(tablesql)
+  conn.commit()
 
 def create_article(subject, body):
   """
@@ -61,3 +60,6 @@ def search_article(subject_text, strict=False):
     result_list = [[a[0], lambda subj=a[0] : private_get(subject=subj)] for a in results]
     return result_list
 
+
+if __name__ == '__main__':
+    init_db('wiki.db')
