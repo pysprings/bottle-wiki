@@ -22,7 +22,7 @@ def create_article(subject, body):
   """
   This function should insert into the table articles, a new article containing the text and subject specified.  
   """
-  cur.execute("INSERT INTO articles (subject, article_text) VALUES (?,?)", (subject,body))
+  cur.execute("INSERT INTO articles (subject, article_text) VALUES (?,?)", (subject.lower(),body))
   conn.commit()
 
 def update_article(subject, article_text):
@@ -54,7 +54,7 @@ def search_article(subject_text, strict=False):
     search_query = """
     SELECT subject 
     FROM articles 
-    WHERE LOWER(subject) like ?;
+    WHERE subject like ?;
     """
     cur.execute(search_query, [subject_text])
     results = cur.fetchall()
