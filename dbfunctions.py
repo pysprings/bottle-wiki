@@ -22,7 +22,7 @@ def create_article(subject, body):
   """
   This function should insert into the table articles, a new article containing the text and subject specified.  
   """
-  cur.execute("INSERT INTO articles (subject, article_text) VALUES ('%s','%s')" % (subject,body))
+  cur.execute("INSERT INTO articles (subject, article_text) VALUES (?,?)", (subject,body))
   conn.commit()
 
 def update_article(subject, article_text):
@@ -34,7 +34,7 @@ def update_article(subject, article_text):
   pass
 
 def private_get(subject):
-    cur.execute("SELECT article_text FROM articles WHERE subject='{subject}'".format(subject=subject))
+    cur.execute("SELECT article_text FROM articles WHERE subject=?", [subject])
     article_text = cur.fetchone()[0]
     return article_text
 
@@ -46,15 +46,14 @@ def search_article(subject_text, strict=False):
     Strict flag makes searches require an exact match.
     """
     if not strict:
-        subject_text = '%'+subject_text+'%'
+        subject_text = '%'+subject_text.lower()+'%'
     search_query = """
     SELECT subject 
     FROM articles 
-    WHERE LOWER(subject) like '%{subject}%';
-    """.format(subject=subject_text.lower())
-    cur.execute(search_query)
+    WHERE LOWER(subject) like ?;
+    """
+    cur.execute(search_query, [subject_text])
     results = cur.fetchall()
     result_list = [[a[0], lambda subj=a[0] : private_get(subject=subj)] for a in results]
     return result_list
-
 
