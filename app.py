@@ -1,8 +1,10 @@
+import os
 from bottle import request, route, run, template, post, get, TEMPLATE_PATH
 from marshmallow import Schema, fields
 import dbfunctions
 
 TEMPLATE_PATH.append('templates')
+DB_PATH = './wiki.db'
 
 
 class ArticleSchema(Schema):
@@ -39,9 +41,6 @@ def edit_view():
 
 @post('/edit')
 def edit():
-
-  # article = Article()
-
   body = request.forms.get('article')
   subject = request.forms.get('subject')
 
@@ -55,4 +54,7 @@ def edit():
   return data['body']
 
 if __name__ == '__main__':
-  run(host='localhost', port=8080, reloader=True)
+  if not os.path.exists(DB_PATH):
+    dbfunctions.init_db(DB_PATH)
+
+  run(host='localhost', port=8080, debug=True)
