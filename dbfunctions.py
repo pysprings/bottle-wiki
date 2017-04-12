@@ -22,6 +22,9 @@ def create_article(subject, body):
   """
   This function should insert into the table articles, a new article containing the text and subject specified.  
   """
+  cur.execute("INSERT INTO articles (subject, article_text) VALUES ('%s','%s')" % (subject,body))
+  conn.commit()
+
   pass
 
 def update_article(subject, article_text):
