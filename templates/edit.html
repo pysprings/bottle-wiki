@@ -1,6 +1,14 @@
-<form action="/edit" method="POST">
-  <label>Our test label</label>
-  <input type="text" name="subject">
-  <textarea name="article" rows="4" cols="50"></textarea>
-  <button type="submit" value="Submit">Submit</button>
-</form>
+<div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>Edit Page</h1>
+        <form action="/edit" method="POST">
+          <label for="subject">Subject: </label>
+          <input type="text" name="subject"> <br />
+          <label for="article">Body:</label><br />
+          <textarea name="article" rows="4" cols="50"></textarea><br />
+          <input type="submit" value="Save" />
+        </form>
+    </div>
+  </div>
+</div>
