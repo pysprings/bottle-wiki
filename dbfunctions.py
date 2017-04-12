@@ -31,7 +31,7 @@ def update_article(subject, article_text):
   """
   cur = conn.cursor()
 
-  sql = "UPDATE articles SET article_text=? updated_on=CURRENT_TIMESTAMP WHERE subject=?"
+  sql = "UPDATE articles SET article_text=?, updated_on=CURRENT_TIMESTAMP WHERE subject=?"
 
   cur.execute(sql, (article_text, subject))
   conn.commit()
