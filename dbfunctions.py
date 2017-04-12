@@ -27,11 +27,15 @@ def create_article(subject, body):
 
 def update_article(subject, article_text):
   """
-  This function should update the article in table articles with subject specified. 
-  It should set the article_text to the text specified.  
-  An error should be returned if the subject does not exist.
+  Update an article in the database, based on the subject.
   """
-  pass
+  cur = conn.cursor()
+
+  sql = "UPDATE articles SET article_text=? updated_on=CURRENT_TIMESTAMP WHERE subject=?"
+
+  cur.execute(sql, (article_text, subject))
+  conn.commit()
+
 
 def private_get(subject):
     cur.execute("SELECT article_text FROM articles WHERE subject=?", [subject])
