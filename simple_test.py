@@ -38,7 +38,7 @@ while i != 'q':
 
 
     print
-    print "Curent database entries"
+    print "Current database entries"
     print "---------------------------------"
     dbfunctions.cur.execute('SELECT * FROM articles;')
     thingy = dbfunctions.cur.fetchall()
