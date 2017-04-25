@@ -22,7 +22,6 @@ def index():
 
 @route('/<subject>')
 def view_article(subject):
-
   db_result = dbfunctions.search_article(subject, False)
 
   if db_result:
@@ -48,7 +47,6 @@ def edit():
 
   schema = ArticleSchema()
   data, errors = schema.dump(article)
-  # import pdb;pdb.set_trace()
   dbfunctions.create_article(subject, body)
 
   return data['body']
