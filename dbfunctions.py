@@ -54,9 +54,11 @@ def search_article(subject_text, strict=False):
     search_query = """
     SELECT subject 
     FROM articles 
-    WHERE subject like ?;
+    WHERE subject like u%s';
     """
-    cur.execute(search_query, [subject_text])
+    print type(subject_text)
+    print search_query % subject_text
+    cur.execute(search_query % subject_text)
     results = cur.fetchall()
     result_list = [[a[0], lambda subj=a[0] : private_get(subject=subj)] for a in results]
     return result_list
