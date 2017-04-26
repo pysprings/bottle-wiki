@@ -10,15 +10,18 @@ subject varchar PRIMARY KEY
 );
 """
 
-conn = sqlite3.connect('wiki.db')
-conn.text_factory = str
-cur = conn.cursor()
-cur.execute(tablesql)
-conn.commit()
+
+def init_db(db_path='wiki.db'):
+    conn = sqlite3.connect(db_path)
+    conn.text_factory = str
+    cur = conn.cursor()
+    cur.execute(tablesql)
+    conn.commit()
+
 
 def create_article(subject, body):
   """
-  This function should insert into the table articles, a new article containing the text and subject specified.  
+  This function should insert into the table articles, a new article containing the text and subject specified.
   """
   cur.execute("INSERT INTO articles (subject, article_text) VALUES (?,?)", (subject.lower(),body))
   conn.commit()
