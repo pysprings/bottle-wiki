@@ -11,6 +11,7 @@ subject varchar PRIMARY KEY
 """
 
 conn = sqlite3.connect('wiki.db')
+conn.text_factory = str
 cur = conn.cursor()
 cur.execute(tablesql)
 conn.commit()
