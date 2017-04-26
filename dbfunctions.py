@@ -10,12 +10,10 @@ subject varchar PRIMARY KEY
 );
 """
 
-def init_db(path):
-  """Initialize the database if it doesn't exist."""
-  conn = sqlite3.connect(path)
-  cur = conn.cursor()
-  cur.execute(tablesql)
-  conn.commit()
+conn = sqlite3.connect('wiki.db')
+cur = conn.cursor()
+cur.execute(tablesql)
+conn.commit()
 
 def create_article(subject, body):
   """
@@ -53,13 +51,9 @@ def search_article(subject_text, strict=False):
     search_query = """
     SELECT subject 
     FROM articles 
-    WHERE subject like u%s';
+    WHERE subject like ?;
     """
-    cur.execute(search_query % subject_text)
+    cur.execute(search_query, [subject_text])
     results = cur.fetchall()
     result_list = [[a[0], lambda subj=a[0] : private_get(subject=subj)] for a in results]
     return result_list
-
-
-if __name__ == '__main__':
-    init_db('wiki.db')
