@@ -10,10 +10,11 @@ subject varchar PRIMARY KEY
 );
 """
 
-
 def init_db(db_path='wiki.db'):
+    global conn
     conn = sqlite3.connect(db_path)
     conn.text_factory = str
+    global cur
     cur = conn.cursor()
     cur.execute(tablesql)
     conn.commit()

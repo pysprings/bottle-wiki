@@ -52,7 +52,5 @@ def edit():
   return data['body']
 
 if __name__ == '__main__':
-  if not os.path.exists(DB_PATH):
-    dbfunctions.init_db(DB_PATH)
-
+  dbfunctions.init_db(DB_PATH)
   run(host='localhost', port=8080, debug=True)
