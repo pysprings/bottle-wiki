@@ -10,14 +10,15 @@ subject varchar PRIMARY KEY
 );
 """
 
-def init_db(db_path='wiki.db'):
+def init_db(db_path='wiki.db', reqtable=tablesql):
     global conn
     conn = sqlite3.connect(db_path)
     conn.text_factory = str
     global cur
     cur = conn.cursor()
-    cur.execute(tablesql)
+    cur.execute(reqtable)
     conn.commit()
+    return cur, conn
 
 
 def create_article(subject, body):
