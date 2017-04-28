@@ -2,7 +2,7 @@ import dbfunctions
 
 
 def print_help():
-    print( "This is a simple database tester:")
+    print("This is a simple database tester:")
     print("Possible Commands:")
     print("C - Add a new article")
     print("U - Update article")
