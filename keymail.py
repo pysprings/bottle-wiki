@@ -1,6 +1,6 @@
 """
 A very simple authentication method for bottle.
-Implimentsa custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
+Impliments a custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
 """
 import uuid
 from dbfunctions import init_db
@@ -17,6 +17,12 @@ email varchar PRIMARY KEY
 
 cur, conn = init_db(reqtable=authtable)
 
+def authenticate(email, password=None):
+    pass
+
+def passwordify(keymail, password):
+    pass
+
 
 def auth_filter(config):
     ''' Validates and consumes a key '''
@@ -25,7 +31,12 @@ def auth_filter(config):
     def to_python(emailkey):
         # Will only return info if the email and key match and the last keepalive was less than 15 minutes ago.
         in_email, in_key = emailkey.split()
-        cur.execute("SELECT * FROM auth WHERE email = ? AND auth_key = ? AND 1440 * (julianday(datetime('now')) - julianday(keepalive)) < 15", (in_email, in_key))
+        cur.execute("""SELECT * 
+                    FROM auth 
+                    WHERE email = ? 
+                    AND auth_key = ? 
+                    AND 1440 * (julianday(datetime('now')) - julianday(keepalive)) < 15"""
+                    , (in_email, in_key))
         check = cur.fetchall()
         if check:
             print("It exists!")
@@ -59,9 +70,11 @@ if __name__ == "__main__":
 
     @app.route('/something/<keymail:auth>')
     def isvalid(keymail):
-        return "You tried to validate as {email} and the result is: {status}. Keymail is now {next_key} .".format(**keymail)
+        return """You tried to validate as {email}
+This status is: {status}.
+Next Keymail is {next_key} .""".format(**keymail)
 
-    print("Try: ")
+    print("Try: http://localhost:8080/somebody@gmail.com d84011a3-9a53-4980-a2f7-c362e879dfc3")
     run(app, host='localhost', port=8080)
 
 
@@ -70,3 +83,6 @@ if __name__ == "__main__":
 # Logout function to expire token manually
 # Password function to consume token and save a password that can be used to get a token without checking email.
 # Additional security checks to expire token (browser changed)
+# Make expirtion time configurable
+# Make seperator configurable
+# Make some password system
