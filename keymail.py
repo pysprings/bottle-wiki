@@ -1,6 +1,6 @@
 """
 A very simple authentication method for bottle.
-Impliments a custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
+Implimentsa custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
 """
 import uuid
 from dbfunctions import init_db
@@ -71,10 +71,10 @@ if __name__ == "__main__":
     @app.route('/something/<keymail:auth>')
     def isvalid(keymail):
         return """You tried to validate as {email}
-This status is: {status}.
+This status was: {status}.
 Next Keymail is {next_key} .""".format(**keymail)
 
-    print("Try: http://localhost:8080/somebody@gmail.com d84011a3-9a53-4980-a2f7-c362e879dfc3")
+    print("Try: http://localhost:8080/something/somebody@gmail.com d84011a3-9a53-4980-a2f7-c362e879dfc3")
     run(app, host='localhost', port=8080)
 
 
