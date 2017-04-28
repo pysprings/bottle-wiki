@@ -34,7 +34,7 @@ def test_edit(db, testapp):
     response = testapp.get('/test')
     assert article in response.body.decode('UTF-8')
 
-def test_edit_squeeze(db, monkeypatch):
+def test_edit_post(db, monkeypatch):
     class Stub:
         forms = {'subject':"Test", 'article':"This is a test."}
     monkeypatch.setattr(app, 'request', Stub())
