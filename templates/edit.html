@@ -1,12 +1,22 @@
+% rebase('base.html')
+<header>
+    <div><img id="logo"/></div>
+    <nav>
+        <ul id="main-nav">
+            <li><a href="/edit">edit</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
             <h1>Edit Page</h1>
             <form action="/edit" method="POST">
                 <label for="subject">Subject: </label>
-                <input type="text" name="subject"> <br />
+                <input type="text" name="subject" value="{{subject}}"> <br />
                 <label for="article">Body:</label><br />
-                <textarea name="article" rows="4" cols="50"></textarea><br />
+                <textarea name="article" rows="4" cols="50">{{body}}</textarea><br />
                 <input type="submit" value="Save" />
             </form>
         </div>

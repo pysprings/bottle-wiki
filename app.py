@@ -1,4 +1,4 @@
-from bottle import request, route, run, template, post, TEMPLATE_PATH
+from bottle import request, route, run, template, post, TEMPLATE_PATH, abort, redirect
 from marshmallow import Schema, fields
 import dbfunctions
 
@@ -19,23 +19,28 @@ class Article():
 
 @route('/')
 def index():
-    return template('index.html')
+    return template('index.html', subject='PySprings Wiki', body='Under Construction')
 
 
 @route('/<subject>')
 def view_article(subject):
-    db_result = dbfunctions.search_article(subject, False)
+    db_result = dbfunctions.search_article(subject)
     if db_result:
         _, get_function = db_result[0]
         body = get_function()
-        return body + ' ' + subject
+        return template('index.html', subject=subject, body=body)
     else:
-        return 'Not found.'
+        return abort(404, 'Not found.')
 
 
-@route('/edit')
-def edit_view():
-    return template('edit.html')
+@route('/<subject>/edit')
+def edit_view(subject):
+    db_result = dbfunctions.search_article(subject)
+    body = ''
+    if db_result:
+        _, get_function = db_result[0]
+        body = get_function()
+    return template('edit.html', subject=subject, body=body)
 
 
 @post('/edit')
@@ -47,9 +52,12 @@ def edit():
 
     schema = ArticleSchema()
     data, errors = schema.dump(article)
-    dbfunctions.create_article(subject, body)
+    if dbfunctions.search_article(subject):
+        dbfunctions.update_article(subject, body)
+    else:
+        dbfunctions.create_article(subject, body)
+    return redirect('/' + subject)
 
-    return data['body']
 
 if __name__ == '__main__':
     dbfunctions.init_db(DB_PATH)

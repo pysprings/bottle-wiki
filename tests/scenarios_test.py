@@ -38,4 +38,5 @@ def test_edit_squeeze(db, monkeypatch):
     class Stub:
         forms = {'subject':"Test", 'article':"This is a test."}
     monkeypatch.setattr(app, 'request', Stub())
-    app.edit()
+    with pytest.raises(bottle.HTTPResponse):
+        app.edit()
