@@ -14,7 +14,7 @@ def search(term):
     response.headers['Cache-Control'] = 'no-cache'
     return json.dumps(db.search(term))
 
-@api.route('/details/<subject>')
+@api.route('/detail/<subject>')
 def details(subject):
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'

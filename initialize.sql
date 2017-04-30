@@ -3,12 +3,6 @@ history_id VARCHAR PRIMARY KEY
 , body VARCHAR
 );
 
-CREATE TABLE IF NOT EXISTS articles (
-subject VARCHAR PRIMARY KEY
-, history_id VARCHAR NOT NULL
-, FOREIGN KEY(history_id) REFERENCES history(history_id)
-) WITHOUT ROWID;
-
 CREATE TABLE IF NOT EXISTS authors (
 email VARCHAR PRIMARY KEY
 ) WITHOUT ROWID;
@@ -20,7 +14,6 @@ article_subject VARCHAR
 , timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
 , PRIMARY KEY (article_subject, timestamp)
 , FOREIGN KEY(author_email) REFERENCES authors(email)
-, FOREIGN KEY(article_subject) REFERENCES articles(subject)
 , FOREIGN KEY(history_id) REFERENCES history(history_id)
 ) WITHOUT ROWID;
 
