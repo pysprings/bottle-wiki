@@ -35,7 +35,11 @@ class Wikidb(object):
         self.conn.commit()
 
     def detail(self, subject):
-        """ Needs docstring """
+        """ 
+        Returns detailed info on an article as a dictionary.
+        This is the intended way to fetch article text.
+        An empty dict is returned if no exact match for subject, this is to avoid object exceptions when using get method.
+        """
         detail_sql = """
         SELECT subject
         , created_on
