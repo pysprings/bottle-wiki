@@ -30,7 +30,7 @@ class Wikidb(object):
         history_id = hash(str(subject+body))
         self.cur.execute("""INSERT OR REPLACE INTO history (body, history_id)
         VALUES (?,?)""", (body, history_id))
-        self.cur.execute("""INSERT INTO authorship(article_subject, author_email, history_id)
+        self.cur.execute("""INSERT INTO authorship(subject, author_email, history_id)
         VALUES(?, ?, ?)""", (subject.lower(), author_email.lower(), history_id))
         self.conn.commit()
 
@@ -62,9 +62,9 @@ class Wikidb(object):
         if not strict:
             subject_text = '%'+subject_text.lower()+'%'
         search_query = """
-        SELECT DISTINCT article_subject
+        SELECT DISTINCT subject
         FROM authorship
-        WHERE article_subject like ?;
+        WHERE subject like ?;
         """
         self.cur.execute(search_query, [subject_text])
         return self.cur.fetchall()

@@ -30,7 +30,7 @@
                 .then(function(data) {
                     var list = [];
                     $.each(data, function(key, value) {
-                        list.push(value.article_subject);
+                        list.push(value.subject);
                     });
                     awesomplete.list = list;
                 });
