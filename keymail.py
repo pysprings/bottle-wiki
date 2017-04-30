@@ -1,6 +1,6 @@
 """
 A very simple authentication method for bottle.
-Implimentsa custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
+Impliments a custom filter for bottle that validates email+uuid keys, consumes, and re-issues them.
 """
 import uuid
 from dbfunctions import init_db

@@ -5,7 +5,6 @@ from dbfunctions import Wikidb
 TEMPLATE_PATH.append('templates')
 DB_PATH = './wiki.db'
 
-db = Wikidb(db_path=DB_PATH)
 
 class ArticleSchema(Schema):
     body = fields.Str()
@@ -52,4 +51,5 @@ def edit():
 
 
 if __name__ == '__main__':
+    db = Wikidb(db_path=DB_PATH)
     run(host='localhost', port=8080, debug=True)
