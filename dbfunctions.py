@@ -1,65 +1,62 @@
 import sqlite3
+from hashlib import md5
 
-# Create if not exists Articles table
-tablesql = """
-CREATE TABLE IF NOT EXISTS articles (
-subject varchar PRIMARY KEY
-, article_text VARCHAR NOT NULL
-, created_on DATETIME DEFAULT CURRENT_TIMESTAMP
-, updated_on DATETIME
-);
-"""
+def hash(text):
+    return md5(text.encode()).hexdigest()
 
-def init_db(db_path='wiki.db', reqtable=tablesql):
-    global conn
-    conn = sqlite3.connect(db_path)
-    conn.text_factory = str
-    global cur
-    cur = conn.cursor()
-    cur.execute(reqtable)
-    conn.commit()
-    return cur, conn
+class Wikidb(object):
+    """ A class for handling wiki data. """
 
+    def __init__(self, db_path='wiki.db'):
+        with open('initialize.sql', 'r') as sql:
+            self.tablesql = sql.read().split(';')
+        self.conn = sqlite3.connect(db_path)
+        self.cur = self.conn.cursor()
+        for command in self.tablesql:
+            self.cur.execute(command)
+        self.conn.commit()
 
-def create_article(subject, body):
-  """
-  This function should insert into the table articles, a new article containing the text and subject specified.
-  """
-  cur.execute("INSERT INTO articles (subject, article_text) VALUES (?,?)", (subject.lower(),body))
-  conn.commit()
+    def put(self, subject, body, author_email='anonymous'):
+        """
+        This function creates or updates an article.
+        """
+        history_id = hash(str(subject+body))
+        self.cur.execute("""INSERT OR REPLACE INTO history (body, history_id)
+        VALUES (?,?)""", (body, history_id))
+        self.cur.execute("""INSERT OR REPLACE INTO articles (subject, history_id)
+        VALUES (?,?)""", (subject.lower(), history_id))
+        self.cur.execute("""INSERT INTO authorship(article_subject, author_email, history_id)
+        VALUES(?, ?, ?)""", (subject.lower(), author_email.lower(), history_id))
+        self.conn.commit()
 
-def update_article(subject, article_text):
-  """
-  Update an article in the database, based on the subject.
-  """
-  cur = conn.cursor()
+    def detail(self, subject):
+        """ Needs docstring """
+        sql = """
+        SELECT subject
+        , created_on
+        , creator_email
+        , last_updated_on
+        , updator_email
+        , body
+        FROM v_first_last
+        WHERE subject = ?;
+        """
+        self.cur.execute(sql, [subject])
+        article_text = self.cur.fetchone()[0]
+        return article_text
 
-  sql = "UPDATE articles SET article_text=?, updated_on=CURRENT_TIMESTAMP WHERE subject=?"
-
-  cur.execute(sql, (article_text, subject))
-  conn.commit()
-
-
-def private_get(subject):
-    cur.execute("SELECT article_text FROM articles WHERE subject=?", [subject])
-    article_text = cur.fetchone()[0]
-    return article_text
-
-def search_article(subject_text, strict=False):
-    """
-    Takes a subject_text and optionally strict boolean.BaseException
-    Returns a list of tuples containing: subject, body_text_function
-    The body text function can be called to return the body text of the article.
-    Strict flag makes searches require an exact match.
-    """
-    if not strict:
-        subject_text = '%'+subject_text.lower()+'%'
-    search_query = """
-    SELECT subject 
-    FROM articles 
-    WHERE subject like ?;
-    """
-    cur.execute(search_query, [subject_text])
-    results = cur.fetchall()
-    result_list = [[a[0], lambda subj=a[0] : private_get(subject=subj)] for a in results]
-    return result_list
+    def search(self, subject_text, strict=False):
+        """
+        Takes a subject_text and optionally strict True/False.
+        Returns a list of article subjects which contain subject_text.
+        Strict flag makes searches require an exact match instead of contains.
+        """
+        if not strict:
+            subject_text = '%'+subject_text.lower()+'%'
+        search_query = """
+        SELECT subject
+        FROM articles
+        WHERE subject like ?;
+        """
+        self.cur.execute(search_query, [subject_text])
+        return list(self.cur.fetchall())
