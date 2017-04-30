@@ -67,4 +67,4 @@ class Wikidb(object):
         WHERE article_subject like ?;
         """
         self.cur.execute(search_query, [subject_text])
-        return list(self.cur.fetchall())
+        return self.cur.fetchall()
