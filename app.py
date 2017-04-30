@@ -25,7 +25,7 @@ def index():
 
 @route('/<subject>')
 def view_article(subject):
-    db_result = db.search(subject)
+    db_result = db.detail(subject)
     if db_result:
         return template('index.html',  subject=db_result.get('subject',''), body=db_result.get('body',''))
     else:
