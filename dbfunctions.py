@@ -48,7 +48,10 @@ class Wikidb(object):
         """
         self.cur.execute(detail_sql, [subject])
         article_text = self.cur.fetchone()
-        return article_text
+        if not article_text:
+            return dict()
+        else:
+            return article_text
 
     def search(self, subject_text, strict=False):
         """
