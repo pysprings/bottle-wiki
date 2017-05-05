@@ -34,7 +34,7 @@ def view_article(subject):
 @route('/<subject>/edit')
 def edit_view(subject):
     db_result = db.detail(subject)
-    return template('edit.html', subject=db_result.get('subject',''), body=db_result.get('body',''))
+    return template('edit.html', subject=subject, body=db_result.get('body',''))
 
 
 @post('/edit')
