@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="http://localhost:900/static/awesomplete.css" />
-    <script src="http://localhost:900/static/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://localhost:8080/static/awesomplete.css" />
+    <script src="http://localhost:8080/static/jquery.min.js"></script>
 
 </head>
 
@@ -13,7 +13,7 @@
     </p>
     <input id="articles" placeholder="Search for an Article" />
 </body>
-<script src="http://localhost:900/static/awesomplete.js"></script>
+<script src="http://localhost:8080/static/awesomplete.js"></script>
 <script>
         var input = document.getElementById("articles");
         var awesomplete = new Awesomplete(input, {
@@ -23,7 +23,7 @@
 
         $("input").on("keyup", function() {
             $.ajax({
-                    url: 'http://localhost:900/api/search/' + this.value,
+                    url: 'http://localhost:8080/api/search/' + this.value,
                     type: 'GET',
                     dataType: 'json'
                 })

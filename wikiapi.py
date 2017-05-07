@@ -38,5 +38,5 @@ if __name__ == '__main__':
     db.put('this is another article', 'this is the body of the article.')
     db.put('this is a third article', 'this is the body of the article.')
 
-    run(api, host='localhost',port=900, debug=True)
+    run(api, host='localhost',port=8080, debug=True)
 
