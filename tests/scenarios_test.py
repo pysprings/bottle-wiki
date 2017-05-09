@@ -37,12 +37,13 @@ def test_get(slug, wsgi, db):
     assert resp.ok or resp.status_code == 404
 
 def test_edit(wsgi, db):
+    subject = "Test Subject"
     article = 'This is a test article'
-    data = {'subject':'Test Subject', 'article':article}
+    data = {'subject':subject, 'article':article}
     edit_resp = requests.post(url + 'edit', data=data, allow_redirects=False)
     assert edit_resp.ok
-    assert edit_resp.headers['Location'] == 'http://localhost/' + data['subject']
-    response = requests.get(url + 'test subject')
+    assert edit_resp.headers['Location'] == 'http://localhost/' + subject
+    response = requests.get(url + subject.lower())
     assert article in response.text
 
 def test_edit_post(db, monkeypatch):
