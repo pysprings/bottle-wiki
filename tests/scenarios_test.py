@@ -1,3 +1,5 @@
+from wsgi_intercept import requests_intercept, add_wsgi_intercept
+import requests
 import bottle
 import webtest
 import app
@@ -13,26 +15,33 @@ Scenarios:
     User modifies a page
     User browses pages
 """
+host, port = 'localhost', 80
+url = 'http://{0}:{1}/'.format(host, port)
 
 @pytest.fixture
 def db(scope='function'):
-    app.dbfunctions.init_db(':memory:')
+    app.db = app.Wikidb(':memory:')
     yield
-    app.dbfunctions.init_db()
 
 @pytest.fixture
-def testapp():
-    return webtest.TestApp(bottle.default_app())
+def wsgi():
+    requests_intercept.install()
+    add_wsgi_intercept(host, port, bottle.default_app)
+    yield
+    requests_intercept.uninstall()
 
-def test_index(testapp):
-    response = testapp.get('/')
-    assert response.status == '200 OK'
+def test_index(wsgi, db):
+    resp = requests.get(url)
+    assert resp.ok
 
-def test_edit(db, testapp):
+def test_edit(wsgi, db):
     article = 'This is a test article'
-    testapp.post('/edit', params={'subject':'Test Subject', 'article':article})
-    response = testapp.get('/test')
-    assert article in response.body.decode('UTF-8')
+    data = {'subject':'Test Subject', 'article':article}
+    edit_resp = requests.post(url + 'edit', data=data, allow_redirects=False)
+    assert edit_resp.ok
+    assert edit_resp.headers['Location'] == 'http://localhost/' + data['subject']
+    response = requests.get(url + 'test subject')
+    assert article in response.text
 
 def test_edit_post(db, monkeypatch):
     class Stub:

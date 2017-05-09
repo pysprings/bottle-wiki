@@ -1,4 +1,4 @@
 bottle==0.12.13
 marshmallow==2.13.4
-WebTest==2.0.27
 pytest==3.0.7
+wsgi-intercept==1.5.0
