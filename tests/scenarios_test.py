@@ -1,3 +1,4 @@
+from hypothesis import given, strategies as st
 from wsgi_intercept import requests_intercept, add_wsgi_intercept
 import requests
 import bottle
@@ -30,8 +31,9 @@ def wsgi():
     yield
     requests_intercept.uninstall()
 
-def test_index(wsgi, db):
-    resp = requests.get(url)
+@given(slug=st.just(''))
+def test_index(slug, wsgi, db):
+    resp = requests.get(url+slug)
     assert resp.ok
 
 def test_edit(wsgi, db):
