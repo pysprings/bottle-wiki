@@ -31,10 +31,10 @@ def wsgi():
     yield
     requests_intercept.uninstall()
 
-@given(slug=st.just(''))
-def test_index(slug, wsgi, db):
+@given(slug=st.text())
+def test_get(slug, wsgi, db):
     resp = requests.get(url+slug)
-    assert resp.ok
+    assert resp.ok or resp.status_code == 404
 
 def test_edit(wsgi, db):
     article = 'This is a test article'
