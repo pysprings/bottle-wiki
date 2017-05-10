@@ -30,7 +30,7 @@ class Wikidb(object):
         history_id = hash(str(subject+body))
         self.cur.execute("""INSERT OR REPLACE INTO history (body, history_id)
         VALUES (?,?)""", (body, history_id))
-        self.cur.execute("""INSERT INTO authorship(subject, author_email, history_id)
+        self.cur.execute("""INSERT OR REPLACE INTO authorship(subject, author_email, history_id)
         VALUES(?, ?, ?)""", (subject.lower(), author_email.lower(), history_id))
         self.conn.commit()
 
