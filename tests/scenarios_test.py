@@ -2,7 +2,6 @@ from hypothesis import given, strategies as st
 from wsgi_intercept import requests_intercept, add_wsgi_intercept
 import requests
 import bottle
-import webtest
 import app
 
 import pytest
