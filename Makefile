@@ -2,5 +2,8 @@ export PYTHONPATH=.
 
 all: test
 
-test: 
+test:
 	py.test
+
+lint:
+	pylint --disable C,R *.py
