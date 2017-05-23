@@ -5,7 +5,7 @@ history_id VARCHAR PRIMARY KEY
 
 CREATE TABLE IF NOT EXISTS authors (
 email VARCHAR PRIMARY KEY
-) WITHOUT ROWID;
+);
 
 CREATE TABLE IF NOT EXISTS authorship (
 subject VARCHAR
@@ -15,7 +15,7 @@ subject VARCHAR
 , PRIMARY KEY (subject, timestamp)
 , FOREIGN KEY(author_email) REFERENCES authors(email)
 , FOREIGN KEY(history_id) REFERENCES history(history_id)
-) WITHOUT ROWID;
+);
 
 INSERT OR REPLACE INTO authors(email) VALUES ('anonymous');
 
