@@ -1,5 +1,3 @@
-export PYTHONPATH=.
-
 all: test lint
 
 test:
