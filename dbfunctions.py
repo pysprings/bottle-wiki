@@ -1,7 +1,7 @@
 import sqlite3
 from hashlib import md5
 
-def hash(text):
+def get_hash(text):
     return md5(text.encode()).hexdigest()
 
 def dict_factory(cursor, row):
@@ -27,7 +27,7 @@ class Wikidb(object):
         """
         This function creates or updates an article.
         """
-        history_id = hash(str(subject+body))
+        history_id = get_hash(str(subject+body))
         self.cur.execute("""INSERT OR REPLACE INTO history (body, history_id)
         VALUES (?,?)""", (body, history_id))
         self.cur.execute("""INSERT OR REPLACE INTO authorship(subject, author_email, history_id)
