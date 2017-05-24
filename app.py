@@ -39,14 +39,15 @@ def edit_view(subject):
 
 @post('/edit')
 def edit():
-    body = request.forms.get('article')
-    subject = request.forms.get('subject')
+    body = request.forms.get('article') # pylint:disable=no-member
+    subject = request.forms.get('subject') # pylint:disable=no-member
 
     article = Article(body=body, subject=subject)
 
     schema = ArticleSchema()
     data, errors = schema.dump(article)
-    db.put(subject, body)
+    assert not errors
+    db.put(data['subject'], data['body'])
     return redirect('/' + subject)
 
 
