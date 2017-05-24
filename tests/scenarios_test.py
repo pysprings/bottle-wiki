@@ -1,4 +1,4 @@
-from hypothesis import given, strategies as st
+from hypothesis import example, given, strategies as st
 from wsgi_intercept import requests_intercept, add_wsgi_intercept
 import requests
 import bottle
@@ -30,6 +30,7 @@ def wsgi():
     yield
     requests_intercept.uninstall()
 
+@example(slug=u'\x80')
 @given(slug=st.text())
 def test_get(slug, wsgi, db):
     resp = requests.get(url+slug)
