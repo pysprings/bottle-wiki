@@ -13,10 +13,7 @@ from utils import hashstring, Config
 
 """ 
 Provides an object for handling data operations in the wiki database.
-Defaults to sqlite backend.
-** TO DO**
-    Add config check and use PostgreSQL if found in config
-    Other back ends???
+Defaults to sqlite backend but can use a valid PostgreSQL URL if set in config.json.
 """
 
 
