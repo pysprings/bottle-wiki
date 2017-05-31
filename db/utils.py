@@ -8,7 +8,7 @@ def hashstring(text):
 class Config(object):
 
         def __init__(self, path='config.json'):
-            self.defaultconfig = {'db_url':'postgresql:///db_name', 'debug':True}
+            self.defaultconfig = {'db_url':'sqlite:///:memory:', 'debug':True}
 
             if not os.path.isfile(path):
                 print("No config.json found, creating default config.")
