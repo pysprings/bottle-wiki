@@ -5,6 +5,9 @@ wiki.db
 #config
 config.json
 
+#vscode
+launch.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
