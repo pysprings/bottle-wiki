@@ -1,4 +1,4 @@
-from initialize_db import\
+from db.initialize_db import\
     create_engine,\
     metadata,\
     history,\
@@ -9,7 +9,7 @@ from initialize_db import\
     v_firstlast,\
     func,\
     default_author_insert
-from utils import hashstring, Config
+from db.utils import hashstring, Config
 
 """ 
 Provides an object for handling data operations in the wiki database.

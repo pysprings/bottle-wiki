@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.expression import Insert
 from sqlalchemy.dialects.postgresql import insert
-from utils import hashstring
+from db.utils import hashstring
 
 
 metadata = MetaData()

@@ -3,7 +3,6 @@ from wsgi_intercept import requests_intercept, add_wsgi_intercept
 import requests
 import bottle
 import app
-
 import pytest
 
 """
