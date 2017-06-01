@@ -19,7 +19,7 @@ url = 'http://{0}:{1}/'.format(host, port)
 
 @pytest.fixture
 def db(scope='function'):
-    app.db = app.Wikidb(':memory:')
+    app.db = app.Wikidb()
     yield
 
 @pytest.fixture
