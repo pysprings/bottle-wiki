@@ -10,6 +10,8 @@ from db.initialize_db import\
     func,\
     default_author_insert
 from db.utils import hashstring, Config
+from datetime import datetime
+
 
 """ 
 Provides an object for handling data operations in the wiki database.
@@ -71,7 +73,10 @@ class Wikidb(object):
         if not article_text:
             return dict()
         else:
-            return dict(article_text)
+            article_dict = dict(article_text)
+            article_dict['last_updated_on'] = article_dict['last_updated_on'].isoformat()
+            article_dict['created_on'] = article_dict['created_on'].isoformat()
+            return article_dict
 
     def search(self, subject_text, strict=False):
         """

@@ -1,7 +1,7 @@
 """ A simple restful webservice to provide access to the wiki.db"""
 import json
 from bottle import Bottle, run, response, static_file, redirect
-from dbfunctions import Wikidb
+from db.dbfunctions import Wikidb
 
 
 api = Bottle()
