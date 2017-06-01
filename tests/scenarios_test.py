@@ -52,4 +52,3 @@ def test_edit_post(db, monkeypatch):
     monkeypatch.setattr(app, 'request', Stub())
     with pytest.raises(bottle.HTTPResponse):
         app.edit()
-        

@@ -25,9 +25,12 @@ if __name__ == "__main__":
     print(config.config)
     print(config.getconfig('db_url'))
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     context = 'something else'
     x = lambda context:hashstring(context)
     print(x(context))
 =======
 >>>>>>> 1e6b959a27cb3f28e778ca09504576a3f17c9299
+=======
+>>>>>>> 6fd5c08d2eb3789d553f61a5a01c453879a47a9e
