@@ -70,3 +70,9 @@ def default_author_insert(engine):
         insert_default = insert_default.on_conflict_do_nothing(
                 index_elements=['email'])
     return insert_default.values(email='anonymous')
+
+
+if __name__ == "__main__":
+    import sys
+    sys.path.append("..")
+    print(firstlast.compile())

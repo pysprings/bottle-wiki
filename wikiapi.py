@@ -25,6 +25,16 @@ def details(subject):
     return json.dumps(db.detail(subject))
 
 
+@api.route('/api/put/<subject>/<body>')
+def post(subject, body):
+    """ This is only a placeholder for a real post method."""
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
+    db.put(subject=subject, body=body)
+    return json.dumps(db.detail(subject))
+
+
+
 
 if __name__ == '__main__':
 # Demonstrates the truely awesome awesomplete drawing data right from the search API above.

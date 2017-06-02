@@ -1,4 +1,4 @@
-from db.initialize_db import\
+from db.dbschema import\
     create_engine,\
     metadata,\
     history,\
@@ -7,6 +7,7 @@ from db.initialize_db import\
     insert,\
     authorship,\
     v_firstlast,\
+    firstlast,\
     func,\
     default_author_insert
 from db.utils import hashstring, Config
@@ -24,8 +25,8 @@ class Wikidb(object):
 
     def __init__(self):
         self.config = Config()
-        self.db_url = self.config.getconfig('db_url')
-        self.debug = self.config.getconfig('debug')
+        self.db_url = self.config['DATABASE']['db_url']
+        self.debug = bool(self.config['DATABASE']['debug'])
         self.engine = create_engine(self.db_url, echo=self.debug)
         self.metadata = metadata
         self.metadata.create_all(self.engine)
@@ -67,7 +68,7 @@ class Wikidb(object):
         This is the intended way to fetch article text.
         An empty dict is returned if no exact match for subject so you can safely call .get()
         """
-        detail_sql = v_firstlast.where(authorship.c.subject == subject.lower())
+        detail_sql = v_firstlast.where(firstlast.c.subject == subject.lower())
 
         article_text = self.sqldo(detail_sql).first()
         if not article_text:
