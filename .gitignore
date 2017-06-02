@@ -3,7 +3,7 @@
 wiki.db
 
 #config
-config.json
+config.cfg
 
 #vscode
 launch.json
