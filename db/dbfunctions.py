@@ -75,13 +75,13 @@ class Wikidb(object):
         """
         history_id = hashstring(body)
         author_id = self.author(email=email)['author_id']
+        values_dict = {
+            'subject': subject.lower(),
+            'history_id': history_id,
+            'author_id': author_id,
+            'timestamp': func.now()
+        }
         if history_id not in self.history_ids:
-            values_dict = {
-                'subject': subject.lower(),
-                'history_id': history_id,
-                'author_id': author_id,
-                'timestamp': func.now()
-            }
             stmt = insert(history, sqlite_replace=True)
             if self.is_postgres:
                 stmt = stmt.on_conflict_do_update(

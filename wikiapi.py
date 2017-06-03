@@ -33,7 +33,12 @@ def post(subject, body):
     db.put(subject=subject, body=body)
     return json.dumps(db.detail(subject))
 
-
+@api.route('/api/tag/<subject>/<tag>')
+def tag(subject, tag):
+    """Add tag to given subject"""
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache'
+    return json.dumps(db.tag(tag, subject))
 
 
 if __name__ == '__main__':
