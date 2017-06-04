@@ -42,8 +42,13 @@ def tag(subject, tag):
 
 @api.route('/api/putjson', method='POST')
 def jsonget():
-    data = request.json
-    print(data)
+    data = dict(request.json)
+    db.put(subject=data.get('subject'), body=data.get('body'), email=data.get('email', 'anonymous'))
+    if 'tags' in data and 'subject' in data:
+        print(data['tags'])
+        subject = data.get('subject')
+        for t in data['tags']:
+            db.tag(t, subject)
 
 
 if __name__ == '__main__':
