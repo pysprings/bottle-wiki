@@ -1,6 +1,6 @@
 """ A simple restful webservice to provide access to the wiki.db"""
 import json
-from bottle import Bottle, run, response, static_file, redirect
+from bottle import Bottle, run, response, static_file, redirect, request
 from db.dbfunctions import Wikidb
 
 
@@ -39,6 +39,11 @@ def tag(subject, tag):
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
     return json.dumps(db.tag(tag, subject))
+
+@api.route('/api/putjson', method='POST')
+def jsonget():
+    data = request.json
+    print(data)
 
 
 if __name__ == '__main__':
