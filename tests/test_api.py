@@ -30,7 +30,8 @@ def test_json(wsgi):
     response_json = requests.get(urlbase + '/api/detail/more')
     details = response_json.json()
 
-    assert payload['tags'] == details['tags']
+    for tag in payload['tags']:
+        assert tag in details['tags']
     assert payload['body'] == details['body']
 
 def test_put(wsgi):
