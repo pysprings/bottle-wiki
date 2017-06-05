@@ -1,38 +1,49 @@
-from db.dbfunctions import Wikidb
-
-w = Wikidb()
-
-print(w.author(email='bob6'))
-
-print(w.author(author_id=1))
-
-w.put(subject='thing #2', body='body text here', email='giblesnot@gmail.com')
-
-
-w.tag('magic', 'thing #2')
-w.tag('maps', 'thing #2')
-
-print(w.detail(subject='thing #2'))
-
-print(w.search(''))
-
-
 import requests
+import pytest
+import bottle
+import wikiapi
+from wsgi_intercept import requests_intercept, add_wsgi_intercept
 
-payload = {
-    "subject": "more"
-    , "body": "this"
-    , "email": "giblesnot@gmail.com"
-    , "tags":["books"
-              , "articles"
-              , "english"]
-}
 
-r = requests.post('http://localhost:8080/api/putjson', json=payload)
-r.status_code
+host, port = 'localhost', 8080
+url = 'http://{0}:{1}/'.format(host, port)
 
-r= requests.get('http://localhost:8080/api/detail/more')
-details = r.json()
+@pytest.fixture
+def wsgi():
+    requests_intercept.install()
+    add_wsgi_intercept(host, port, bottle.default_app)
+    yield
+    requests_intercept.uninstall()
 
-for item in payload:
-    assert item in details
+def test_json(wsgi):
+    payload = {
+        "subject": "more"
+        , "body": "this"
+        , "email": "giblesnot@gmail.com"
+        , "tags":["books"
+                , "articles"
+                , "english"]
+    }
+    urlbase = 'http://{host}:{port}'.format(host=host, port=port)
+    r = requests.post(urlbase + '/api/putjson', json=payload)
+
+    response_json = requests.get(urlbase + '/api/detail/more')
+    details = response_json.json()
+
+    assert payload['tags'] == details['tags']
+    assert payload['body'] == details['body']
+
+def test_put(wsgi):
+    payload = {
+        "subject": "more"
+        , "body": "this"
+    }
+    urlbase = 'http://{host}:{port}'.format(host=host, port=port)
+    r = requests.post(urlbase + '/api/put/{subject}/{body}'.format(**payload))
+
+    response_json = requests.get(urlbase + '/api/detail/more')
+    details = response_json.json()
+
+    assert payload['body'] == details['body']
+    assert payload['subject'].lower() == details['subject'].lower()
+    
