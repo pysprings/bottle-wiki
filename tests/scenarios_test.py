@@ -3,7 +3,6 @@ from wsgi_intercept import requests_intercept, add_wsgi_intercept
 import requests
 import bottle
 import app
-
 import pytest
 
 """
@@ -20,7 +19,7 @@ url = 'http://{0}:{1}/'.format(host, port)
 
 @pytest.fixture
 def db(scope='function'):
-    app.db = app.Wikidb(':memory:')
+    app.db = app.Wikidb()
     yield
 
 @pytest.fixture

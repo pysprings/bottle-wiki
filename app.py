@@ -1,10 +1,8 @@
 from bottle import request, route, run, template, post, TEMPLATE_PATH, abort, redirect
 from marshmallow import Schema, fields
-from dbfunctions import Wikidb
+from db.dbfunctions import Wikidb
 
 TEMPLATE_PATH.append('templates')
-DB_PATH = './wiki.db'
-
 
 class ArticleSchema(Schema):
     body = fields.Str()
@@ -52,5 +50,5 @@ def edit():
 
 
 if __name__ == '__main__':
-    db = Wikidb(db_path=DB_PATH)
+    db = Wikidb()
     run(host='localhost', port=8080, debug=True)

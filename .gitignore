@@ -1,5 +1,12 @@
+
 #database
 wiki.db
+
+#config
+config.cfg
+
+#vscode
+launch.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
