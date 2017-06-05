@@ -1,6 +1,6 @@
 """ A simple restful webservice to provide access to the wiki.db"""
 import json
-from bottle import Bottle, run, response, static_file, redirect, request, route
+from bottle import run, response, static_file, redirect, request, route
 from db.dbfunctions import Wikidb
 
 db = Wikidb()
@@ -31,7 +31,7 @@ def post(subject, body):
     return json.dumps(db.detail(subject))
 
 @route('/api/tag/<subject>/<tag>')
-def tag(subject, tag):
+def addtag(subject, tag):
     """Add tag to given subject"""
     response.headers['Content-Type'] = 'application/json'
     response.headers['Cache-Control'] = 'no-cache'
